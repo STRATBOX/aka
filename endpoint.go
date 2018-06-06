@@ -19,7 +19,7 @@ type Handler struct {
 
 func (h Handler) Create(w http.ResponseWriter, r *http.Request)  {
 	id, _ := uuid.NewV4()
-	company := &aka.Company{
+	company := &Company{
 		uuid: id.String()
 	}
 
