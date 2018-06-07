@@ -1,4 +1,4 @@
-package aka
+package company
 
 import (
 	"time"

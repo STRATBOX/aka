@@ -4,7 +4,7 @@ import (
 	"gopkg.in/mgo.v2"
 	"gopkg.in/mgo.v2/bson"
 
-	"github.com/STRATBOX/aka"
+	"github.com/STRATBOX/aka/company"
 )
 
 // MgoRepository type
@@ -20,7 +20,7 @@ func NewRepository(session *mgo.Session) *MgoRepository {
 }
 
 // Create adds a new company record to mongo
-func (r *MgoRepository) Create(c *aka.Company) error {
+func (r *MgoRepository) Create(c *company.Company) error {
 	s := r.session.Clone()
 	defer s.Close()
 
@@ -30,7 +30,7 @@ func (r *MgoRepository) Create(c *aka.Company) error {
 }
 
 // Update amends a company record in mongo
-func (r *MgoRepository) Update(id string, c *aka.Company) error {
+func (r *MgoRepository) Update(id string, c *company.Company) error {
 
 	s := r.session.Clone()
 	defer s.Close()
@@ -43,8 +43,8 @@ func (r *MgoRepository) Update(id string, c *aka.Company) error {
 }
 
 // Find finds a company record in mongo with id provided
-func (r *MgoRepository) Find(id string) (*aka.Company, error) {
-	var c *aka.Company
+func (r *MgoRepository) Find(id string) (*company.Company, error) {
+	var c *company.Company
 	s := r.session.Clone()
 	defer s.Close()
 
@@ -59,8 +59,8 @@ func (r *MgoRepository) Find(id string) (*aka.Company, error) {
 }
 
 // FindAll returns all companies in the database
-func (r *MgoRepository) FindAll() ([]*aka.Company, error) {
-	var companies []*aka.Company
+func (r *MgoRepository) FindAll() ([]*company.Company, error) {
+	var companies []*company.Company
 	s := r.session.Clone()
 	defer s.Close()
 

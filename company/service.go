@@ -1,4 +1,4 @@
-package aka
+package company
 
 // CompanyService type
 type CompanyService struct {

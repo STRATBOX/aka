@@ -1,4 +1,4 @@
-package aka
+package company
 
 import (
 	"encoding/json"
@@ -54,6 +54,20 @@ func (h Handler) List(w http.ResponseWriter, r *http.Request) {
 func (h Handler) Get(w http.ResponseWriter, r *http.Request) {
 	id := chi.URLParam(r, "id")
 	company, err := h.service.Find(id)
+	if err != nil {
+		render.JSON(w, r, err)
+		return
+	}
+	render.JSON(w, r, company)
+}
+
+// Update endpoint edits a company in the database
+func (h Handler) Update(w http.ResponseWriter, r *http.Request) {
+	var company *Company
+	id := chi.URLParam(r, "id")
+	// _id := bson.ObjectIdHex(id)
+	json.NewDecoder(r.Body).Decode(&company)
+	err := h.service.Update(id, company)
 	if err != nil {
 		render.JSON(w, r, err)
 		return

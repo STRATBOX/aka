@@ -5,8 +5,7 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/STRATBOX/aka"
-
+	"github.com/STRATBOX/aka/company"
 	"github.com/STRATBOX/aka/db"
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
@@ -45,8 +44,8 @@ func main() {
 	r.Use(render.SetContentType(render.ContentTypeJSON))
 
 	repository := db.NewRepository(getSession())
-	companyservice := aka.NewCompanyService(repository)
-	companies := aka.NewHandler(companyservice)
+	companyservice := company.NewCompanyService(repository)
+	companies := company.NewHandler(companyservice)
 
 	r.Mount("/companies", companies.Routes())
 
