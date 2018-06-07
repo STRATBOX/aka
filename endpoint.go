@@ -1,4 +1,4 @@
-package api
+package aka
 
 import (
 	"encoding/json"
@@ -7,8 +7,6 @@ import (
 
 	"gopkg.in/mgo.v2/bson"
 
-	"github.com/STRATBOX/aka"
-
 	"github.com/go-chi/chi"
 	"github.com/go-chi/render"
 	"github.com/satori/go.uuid"
@@ -16,24 +14,17 @@ import (
 
 // Handler handles incoming http requests
 type Handler struct {
-	service aka.Service
-}
-
-// Company represents a company document in mongo
-type Company struct {
-	ID   bson.ObjectId `json:"id" bson:"_id"`
-	UUID string        `json:"uuid" bson:"uuid"`
-	*aka.Company
+	service Service
 }
 
 // NewHandler returns a new api/endpoint handler
-func NewHandler(service aka.Service) *Handler {
+func NewHandler(service Service) *Handler {
 	return &Handler{service}
 }
 
 // Create endpoint stores a company in the database
 func (h Handler) Create(w http.ResponseWriter, r *http.Request) {
-	id, _ := uuid.NewV4()
+	id := uuid.NewV4()
 	company := &Company{
 		ID:        bson.NewObjectId(),
 		UUID:      id.String(),

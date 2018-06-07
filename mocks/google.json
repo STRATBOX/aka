@@ -1,15 +1,20 @@
 {
-	"name": "Google LLC.",
-	"display.name": "Google",
-	"description": "Google LLC is an American multinational technology company that specializes in Internet-related services and products, which include online advertising technologies, search engine, cloud computing, software, and hardware.",
-	"active": true,
-	"website": "google.com",
-	"ticker": "GOOG",
-	"founded": "1998-09-04",
-	"social": {
-		"twitter": "@Google",
-		"facebook": "@Google",
-		"linkedin": "google"
-	},
-	"sectors": ["Cloud Computing", "Technology", "Internet Services & Products", "Software"]
+  "name": "Google LLC",
+  "display.name": "Google",
+  "description": "Google LLC is an American multinational technology company that specializes in Internet-related services and products, which include online advertising technologies, search engine, cloud computing, software, and hardware.",
+  "active": true,
+  "ticker": "GOOG",
+  "website": "google.com",
+  "founded": "1998-09-04T00:00:00.000Z",
+  "sectors": [
+    "Cloud Computing",
+    "Software",
+    "Technology",
+    "Internet Services & Products"
+  ],
+  "social": {
+    "twitter": "@Google",
+    "facebook": "@Google",
+    "linkedin": "google"
+  }
 }
