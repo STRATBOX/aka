@@ -29,28 +29,15 @@ func (r *MgoRepository) Create(c *company.Company) error {
 	return err
 }
 
-// Update amends a company record in mongo
-func (r *MgoRepository) Update(id string, c *company.Company) error {
-
-	s := r.session.Clone()
-	defer s.Close()
-
-	// update the company
-	_id := bson.ObjectIdHex(id)
-	query := bson.M{"_id": _id}
-	err := s.DB("aka").C("companies").Update(query, c)
-	return err
-}
-
 // Find finds a company record in mongo with id provided
-func (r *MgoRepository) Find(id string) (*company.Company, error) {
+func (r *MgoRepository) Find(id company.ID) (*company.Company, error) {
 	var c *company.Company
 	s := r.session.Clone()
 	defer s.Close()
 
 	// find the company
-	_id := bson.ObjectIdHex(id)
-	query := bson.M{"_id": _id}
+	// _id := bson.ObjectIdHex(id)
+	query := bson.M{"_id": id}
 	err := s.DB("aka").C("companies").Find(query).One(&c)
 	if err != nil {
 		return nil, err
@@ -73,14 +60,25 @@ func (r *MgoRepository) FindAll() ([]*company.Company, error) {
 	return companies, nil
 }
 
+// Update amends a company record in mongo
+func (r *MgoRepository) Update(id company.ID, c *company.Company) error {
+
+	s := r.session.Clone()
+	defer s.Close()
+
+	// update the company
+	query := bson.M{"_id": id}
+	err := s.DB("aka").C("companies").Update(query, c)
+	return err
+}
+
 // Delete removes a company with given id from the database
-func (r *MgoRepository) Delete(id string) error {
+func (r *MgoRepository) Delete(id company.ID) error {
 	s := r.session.Clone()
 	defer s.Close()
 
 	// find the company
-	_id := bson.ObjectIdHex(id)
-	query := bson.M{"_id": _id}
+	query := bson.M{"_id": id}
 	err := s.DB("aka").C("companies").Remove(query)
 	return err
 }

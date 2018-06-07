@@ -26,7 +26,7 @@ func NewHandler(service Service) *Handler {
 func (h Handler) Create(w http.ResponseWriter, r *http.Request) {
 	id := uuid.NewV4()
 	company := &Company{
-		ID:        bson.NewObjectId(),
+		ID:        NewID(),
 		UUID:      id.String(),
 		CreatedAt: time.Now(),
 	}
@@ -53,7 +53,8 @@ func (h Handler) List(w http.ResponseWriter, r *http.Request) {
 // Get endpoint retrieves a company with given id from the database
 func (h Handler) Get(w http.ResponseWriter, r *http.Request) {
 	id := chi.URLParam(r, "id")
-	company, err := h.service.Find(id)
+	_id := StringToID(id)
+	company, err := h.service.Find(_id)
 	if err != nil {
 		render.JSON(w, r, err)
 		return
@@ -65,9 +66,9 @@ func (h Handler) Get(w http.ResponseWriter, r *http.Request) {
 func (h Handler) Update(w http.ResponseWriter, r *http.Request) {
 	var company *Company
 	id := chi.URLParam(r, "id")
-	// _id := bson.ObjectIdHex(id)
+	_id := ID(bson.ObjectIdHex(id))
 	json.NewDecoder(r.Body).Decode(&company)
-	err := h.service.Update(id, company)
+	err := h.service.Update(_id, company)
 	if err != nil {
 		render.JSON(w, r, err)
 		return

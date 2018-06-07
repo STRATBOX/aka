@@ -11,7 +11,7 @@ func NewCompanyService(repo Repository) *CompanyService {
 }
 
 // Find retrives a company for given id
-func (s *CompanyService) Find(id string) (*Company, error) {
+func (s *CompanyService) Find(id ID) (*Company, error) {
 	c, err := s.repo.Find(id)
 	if err != nil {
 		return nil, err
@@ -35,13 +35,13 @@ func (s *CompanyService) Create(c *Company) error {
 }
 
 // Update edits a company in the databae with given id
-func (s *CompanyService) Update(id string, c *Company) error {
+func (s *CompanyService) Update(id ID, c *Company) error {
 	err := s.repo.Update(id, c)
 	return err
 }
 
 // Delete removes a company in the databae with given id
-func (s *CompanyService) Delete(id string) error {
+func (s *CompanyService) Delete(id ID) error {
 	err := s.repo.Delete(id)
 	return err
 }
