@@ -2,12 +2,7 @@ package company
 
 import (
 	"time"
-
-	"gopkg.in/mgo.v2/bson"
 )
-
-// ID type
-type ID bson.ObjectId
 
 // Company represents a company/organisation
 type Company struct {
@@ -52,14 +47,4 @@ type Service interface {
 	Create(c *Company) error
 	Delete(id ID) error
 	Update(id ID, c *Company) error
-}
-
-// NewID creates a new object id
-func NewID() ID {
-	return ID(bson.NewObjectId())
-}
-
-// StringToID converts a string to type ID
-func StringToID(s string) ID {
-	return ID(bson.ObjectIdHex(s))
 }
