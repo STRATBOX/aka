@@ -12,12 +12,12 @@ import (
 
 // Handler handles incoming http requests
 type Handler struct {
-	service Service
+	companies UseCase
 }
 
 // NewHandler returns a new api/endpoint handler
-func NewHandler(service Service) *Handler {
-	return &Handler{service}
+func NewHandler(companies UseCase) *Handler {
+	return &Handler{companies}
 }
 
 // Create endpoint stores a company in the database
@@ -30,7 +30,7 @@ func (h Handler) Create(w http.ResponseWriter, r *http.Request) {
 	}
 
 	json.NewDecoder(r.Body).Decode(&company)
-	err := h.service.Create(company)
+	err := h.companies.Create(company)
 	if err != nil {
 		render.JSON(w, r, err)
 		return
@@ -40,7 +40,7 @@ func (h Handler) Create(w http.ResponseWriter, r *http.Request) {
 
 // List endpoint displays all companies in the database
 func (h Handler) List(w http.ResponseWriter, r *http.Request) {
-	companies, err := h.service.FindAll()
+	companies, err := h.companies.FindAll()
 	if err != nil {
 		render.JSON(w, r, err)
 		return
@@ -51,7 +51,7 @@ func (h Handler) List(w http.ResponseWriter, r *http.Request) {
 // Get endpoint retrieves a company with given id from the database
 func (h Handler) Get(w http.ResponseWriter, r *http.Request) {
 	id := UUID(chi.URLParam(r, "id"))
-	company, err := h.service.Find(id)
+	company, err := h.companies.Find(id)
 	if err != nil {
 		render.JSON(w, r, err)
 		return
@@ -64,7 +64,7 @@ func (h Handler) Update(w http.ResponseWriter, r *http.Request) {
 	var company *Company
 	id := UUID(chi.URLParam(r, "id"))
 	json.NewDecoder(r.Body).Decode(&company)
-	err := h.service.Update(id, company)
+	err := h.companies.Update(id, company)
 	if err != nil {
 		render.JSON(w, r, err)
 		return

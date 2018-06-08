@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 	"time"
@@ -16,7 +17,7 @@ import (
 
 // var session *mgo.Session
 
-const appname string = "raion"
+const appname string = "aka"
 const host string = "localhost"
 const port string = ":3333"
 
@@ -32,6 +33,33 @@ func getSession() *mgo.Session {
 	return session
 }
 
+func init() {
+	db, err := mgo.Dial("mongodb://localhost")
+	defer db.Close()
+
+	if err != nil {
+		panic(err)
+	}
+
+	// fetch collection
+	col := db.DB(appname).C("companies")
+
+	index := mgo.Index{
+		Key:        []string{"uuid"},
+		Unique:     true,
+		DropDups:   true,
+		Background: true,
+		Sparse:     true,
+	}
+
+	err = col.EnsureIndex(index)
+	if err != nil {
+		panic(err)
+	}
+
+	fmt.Printf("[raion]: create database indexes for aka - %s\n", "companies")
+}
+
 func main() {
 	r := chi.NewRouter()
 
@@ -44,7 +72,7 @@ func main() {
 	r.Use(render.SetContentType(render.ContentTypeJSON))
 
 	repository := db.NewRepository(getSession())
-	companyservice := company.NewCompanyService(repository)
+	companyservice := company.NewService(repository)
 	companies := company.NewHandler(companyservice)
 
 	r.Mount("/companies", companies.Routes())
