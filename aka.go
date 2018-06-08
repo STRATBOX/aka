@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"os"
 	"time"
 
 	"github.com/STRATBOX/aka/company"
@@ -17,31 +16,28 @@ import (
 	mgo "gopkg.in/mgo.v2"
 )
 
-// var session *mgo.Session
-
-const (
-	// app | service name
-	appname string = "stratbox.aka.srv.companies"
-)
+// const (
+// 	// app | service name
+// 	appname string = "stratbox.aka.srv.companies"
+// )
 
 func main() {
 	// create config struct
 	type config struct {
 		server struct {
-			port string
-		}
+			port string `mapstructure:"port"`
+		} `mapstructure:"server"`
 		database struct {
-			name string
-			url  string
-		}
+			name string `mapstructure:"name"`
+			url  string `mapstructure:"url"`
+		} `mapstructure:"database"`
 	}
 
+	// load environment variables
 	var c config
 
-	// load environment variables
 	// set config file path directly
 	// viper.SetConfigFile("aka.json")
-
 	// Add paths config paths. Accepts multiple paths.
 	// It will search these paths in given order
 	viper.AddConfigPath(".")
@@ -59,7 +55,7 @@ func main() {
 	if err := viper.Unmarshal(&c); err != nil {
 		log.Fatalf("unable to decode into struct, %v", err)
 	}
-	fmt.Println("configs:", c.server.port, c.database.name, c.database.url)
+	fmt.Printf("port=%s db=%s url=%s\n", c.server.port, c.database.name, c.database.url)
 
 	r := chi.NewRouter()
 
@@ -101,13 +97,4 @@ func getSession(url string) *mgo.Session {
 	}
 	session.SetMode(mgo.Monotonic, true)
 	return session
-}
-
-// envString returns an environment variable string
-func envString(env, fallback string) string {
-	e := os.Getenv(env)
-	if e == "" {
-		return fallback
-	}
-	return e
 }
