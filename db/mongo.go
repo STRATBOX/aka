@@ -9,14 +9,35 @@ import (
 
 // MgoRepository type
 type MgoRepository struct {
-	session *mgo.Session
+	db         string
+	session    *mgo.Session
+	collection string
 }
 
 // NewRepository creates a new company repository
-func NewRepository(session *mgo.Session) *MgoRepository {
-	return &MgoRepository{
-		session: session,
+func NewRepository(db string, session *mgo.Session) (*MgoRepository, error) {
+	r := &MgoRepository{
+		db:         db,
+		session:    session,
+		collection: "companies",
 	}
+
+	index := mgo.Index{
+		Key:        []string{"uuid"},
+		Unique:     true,
+		DropDups:   true,
+		Background: true,
+		Sparse:     true,
+	}
+
+	// fetch collection
+	col := session.DB(db).C(r.collection)
+
+	if err := col.EnsureIndex(index); err != nil {
+		return nil, err
+	}
+
+	return r, nil
 }
 
 // Create adds a new company record to mongo
@@ -26,7 +47,7 @@ func (r *MgoRepository) Create(c *company.Company) error {
 
 	// insert the company
 	// c.ID = bson.NewObjectId()
-	err := s.DB("aka").C("companies").Insert(c)
+	err := s.DB(r.db).C(r.collection).Insert(c)
 	return err
 }
 
@@ -39,7 +60,7 @@ func (r *MgoRepository) Find(id company.UUID) (*company.Company, error) {
 	// find the company
 	// _id := bson.ObjectIdHex(id)
 	query := bson.M{"uuid": id}
-	err := s.DB("aka").C("companies").Find(query).One(&c)
+	err := s.DB(r.db).C(r.collection).Find(query).One(&c)
 	if err != nil {
 		return nil, err
 	}
@@ -54,7 +75,7 @@ func (r *MgoRepository) FindAll() ([]*company.Company, error) {
 
 	// find the company
 	query := bson.M{}
-	err := s.DB("aka").C("companies").Find(query).All(&companies)
+	err := s.DB(r.db).C(r.collection).Find(query).All(&companies)
 	if err != nil {
 		return nil, err
 	}
@@ -69,7 +90,7 @@ func (r *MgoRepository) Update(id company.UUID, c *company.Company) error {
 
 	// update the company
 	query := bson.M{"uuid": id}
-	err := s.DB("aka").C("companies").Update(query, c)
+	err := s.DB(r.db).C(r.collection).Update(query, c)
 	return err
 }
 
@@ -80,6 +101,6 @@ func (r *MgoRepository) Delete(id company.UUID) error {
 
 	// find the company
 	query := bson.M{"uuid": id}
-	err := s.DB("aka").C("companies").Remove(query)
+	err := s.DB(r.db).C(r.collection).Remove(query)
 	return err
 }
