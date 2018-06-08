@@ -3,7 +3,6 @@
   "display.name": "Google",
   "description": "Google LLC is an American multinational technology company that specializes in Internet-related services and products, which include online advertising technologies, search engine, cloud computing, software, and hardware.",
   "active": true,
-  "ticker": "GOOG",
   "website": "google.com",
   "founded": "1998-09-04T00:00:00.000Z",
   "sectors": [

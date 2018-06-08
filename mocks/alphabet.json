@@ -1,0 +1,15 @@
+{
+  "name": "Alphabet Inc.",
+  "display.name": "Alphabet",
+  "description": "Alphabet Inc. is an American multinational conglomerate headquartered in Mountain View, California. It was created through a corporate restructuring of Google on October 2, 2015 and became the parent company of Google and several former Google subsidiaries",
+  "active": true,
+  "ticker": "GOOG",
+  "website": "abc.xyz",
+  "founded": "2015-10-02",
+  "sectors": [
+    "Conglomerate"
+  ],
+  "social": {
+    "twitter": "@alphabetincUS"
+  }
+}
