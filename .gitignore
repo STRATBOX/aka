@@ -9,3 +9,6 @@ main
 
 # Docker
 docker-compose.debug.yml
+
+# IDE
+.vscode
