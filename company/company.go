@@ -45,8 +45,8 @@ type Repository interface {
 	Update(id UUID, c *Company) error
 }
 
-// Service interface
-type Service interface {
+// UseCase interface
+type UseCase interface {
 	Find(id UUID) (*Company, error)
 	FindAll() ([]*Company, error)
 	Create(c *Company) error
