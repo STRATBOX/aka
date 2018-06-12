@@ -67,7 +67,7 @@ func main() {
 	r.Use(middleware.URLFormat)
 	r.Use(render.SetContentType(render.ContentTypeJSON))
 
-	repository, _ := db.NewRepository(c.database.name, getSession(c.database.url))
+	repository, _ := db.NewRepository(c.Database.Name, getSession(c.Database.URL))
 	companyservice := company.NewService(repository)
 	companies := company.NewHandler(companyservice)
 
