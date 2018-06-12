@@ -76,7 +76,7 @@ func main() {
 	srv := &http.Server{
 		ReadTimeout:  5 * time.Second,
 		WriteTimeout: 10 * time.Second,
-		Addr:         c.server.port,
+		Addr:         c.Server.Port,
 		Handler:      r,
 	}
 
