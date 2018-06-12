@@ -24,12 +24,12 @@ import (
 func main() {
 	// create config struct
 	type config struct {
-		server struct {
-			port string `mapstructure:"port"`
+		Server struct {
+			Port string `mapstructure:"port"`
 		} `mapstructure:"server"`
-		database struct {
-			name string `mapstructure:"name"`
-			url  string `mapstructure:"url"`
+		Database struct {
+			Name string `mapstructure:"name"`
+			URL  string `mapstructure:"url"`
 		} `mapstructure:"database"`
 	}
 
@@ -55,7 +55,7 @@ func main() {
 	if err := viper.Unmarshal(&c); err != nil {
 		log.Fatalf("unable to decode into struct, %v", err)
 	}
-	fmt.Printf("port=%s db=%s url=%s\n", c.server.port, c.database.name, c.database.url)
+	fmt.Printf("port=%s db=%s url=%s\n", c.Server.Port, c.Database.Name, c.Database.URL)
 
 	r := chi.NewRouter()
 
