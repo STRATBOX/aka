@@ -5,7 +5,7 @@
   "active": true,
   "ticker": "GOOG",
   "website": "abc.xyz",
-  "founded": "2015-10-02",
+  "founded": "2015-10-02T00:00:00.000Z",
   "sectors": [
     "Conglomerate"
   ],
