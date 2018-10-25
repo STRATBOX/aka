@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"net/http"
 	"time"
@@ -11,7 +10,7 @@ import (
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
 	"github.com/go-chi/render"
-	"github.com/spf13/viper"
+	"github.com/koding/multiconfig"
 
 	mgo "gopkg.in/mgo.v2"
 )
@@ -21,41 +20,32 @@ import (
 // 	appname string = "stratbox.aka.srv.companies"
 // )
 
-func main() {
-	// create config struct
-	type config struct {
-		Server struct {
-			Port string `mapstructure:"port"`
-		} `mapstructure:"server"`
-		Database struct {
-			Name string `mapstructure:"name"`
-			URL  string `mapstructure:"url"`
-		} `mapstructure:"database"`
-	}
+// Server type for config
+type Server struct {
+	Port string
+}
 
-	// load environment variables
-	var c config
+// Database type for config
+type Database struct {
+	Name string
+	URL  string
+}
+
+// Config type for app level settings
+type Config struct {
+	Server   Server
+	Database Database
+}
+
+func main() {
+
+	var c Config
 
 	// set config file path directly
-	// viper.SetConfigFile("aka.json")
-	// Add paths config paths. Accepts multiple paths.
-	// It will search these paths in given order
-	viper.AddConfigPath(".")
-	// viper.AddConfigPath("./config")
-	// register config filename (no extension)
-	viper.SetConfigName("aka")
-	// optionally set confilg type
-	viper.SetConfigType("toml")
+	conf := multiconfig.NewWithPath("aka.toml")
 
 	// read config file
-	if err := viper.ReadInConfig(); err != nil {
-		log.Fatalf("Error reading config file, %s", err)
-	}
-	// unmarshal config into struct
-	if err := viper.Unmarshal(&c); err != nil {
-		log.Fatalf("unable to decode into struct, %v", err)
-	}
-	fmt.Printf("port=%s db=%s url=%s\n", c.Server.Port, c.Database.Name, c.Database.URL)
+	conf.MustLoad(&c)
 
 	r := chi.NewRouter()
 
